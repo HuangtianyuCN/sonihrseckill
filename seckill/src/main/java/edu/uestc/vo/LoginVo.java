@@ -18,7 +18,7 @@ public class LoginVo {
 
     // 通过注解的方式校验（JSR303）
     @NotNull
-    @Length(min = 32)// 长度最小为32
+    @Length(min = 10)// 长度最小为32
     private String password;
 
     public String getMobile() {

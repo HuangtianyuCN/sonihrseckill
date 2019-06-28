@@ -12,7 +12,9 @@ import edu.uestc.util.UUIDUtil;
 import edu.uestc.vo.LoginVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +35,19 @@ public class SeckillUserService {
     @Autowired
     RedisService redisService;
 
+    //http://localhost:8080/seckill/user/register?id=15195819097&nickname=rhinos&password=08173237eerrtt&salt=12345
+    public SeckillUser register(long id,String nickname,String password,String salt){
+        String calcPass = MD5Util.formPassToDbPass(password, salt);
+        SeckillUser user = new SeckillUser(id,nickname,calcPass,salt);
+        try{
+            seckillUserDao.insertUser(user);
+        }catch(DuplicateKeyException e){
+            return null;
+        }
+        user.setPassword("");
+        return user;
+    }
+
     /**
      * 用户登录, 要么处理成功返回true，否则会抛出全局异常
      * 抛出的异常信息会被全局异常接收，全局异常会将异常信息传递到全局异常处理器
@@ -47,6 +62,7 @@ public class SeckillUserService {
             throw new GlobalException(CodeMsg.SERVER_ERROR);
         }
         // 获取用户提交的手机号码和密码
+        System.out.println("dologin" + loginVo);
         String mobile = loginVo.getMobile();
         String password = loginVo.getPassword();
         // 判断手机号是否存在

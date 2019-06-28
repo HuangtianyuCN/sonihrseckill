@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * c5：订单详情页面静态化
  */
 @Controller
-@RequestMapping("order")
+@RequestMapping("/order")
 public class OrderController {
 
     @Autowired

@@ -17,6 +17,15 @@ public class SeckillUser {
     private Date lastLoginDate;
     private Integer loginCount;
 
+    public SeckillUser() {
+    }
+
+    public SeckillUser(Long id, String nickname, String password, String salt) {
+        this.id = id;
+        this.nickname = nickname;
+        this.password = password;
+        this.salt = salt;
+    }
 
     public Long getId() {
         return id;

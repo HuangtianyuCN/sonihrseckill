@@ -23,7 +23,7 @@ public class HelloController {
 
 
     @ResponseBody
-    @RequestMapping("/")
+    @RequestMapping("")
     public String index() {
         return "Greetings from Spring Boot!";
     }
@@ -72,7 +72,7 @@ public class HelloController {
 
     // 测试RedisService的set方法
     @ResponseBody
-    @RequestMapping("redis/set")
+    @RequestMapping("/redis/set")
     public Result<Boolean> redisSet() {
         User user = new User();
         user.setId(1);

@@ -1,9 +1,12 @@
 package edu.uestc.controller;
 
+import edu.uestc.controller.result.CodeMsg;
 import edu.uestc.controller.result.Result;
 import edu.uestc.domain.SeckillUser;
+import edu.uestc.service.SeckillUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+    @Autowired
+    SeckillUserService seckillUserService;
 
     // 日志记录：Logger是由slf4j接口规范创建的，对象有具体的实现类创建
     private static Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -30,7 +35,16 @@ public class UserController {
     @RequestMapping("/user_info")
     @ResponseBody
     public Result<SeckillUser> userInfo(SeckillUser user) {
-        logger.info(user.toString());
+        //logger.info(user.toString());
+        return Result.success(user);
+    }
+
+    @RequestMapping("/register")
+    @ResponseBody
+    public Result<SeckillUser> register(long id,String nickname,String password,String salt){
+        SeckillUser user = seckillUserService.register(id,nickname,password,salt);
+        if(user==null)
+            return Result.error(CodeMsg.REGISTER_ERROR);
         return Result.success(user);
     }
 }

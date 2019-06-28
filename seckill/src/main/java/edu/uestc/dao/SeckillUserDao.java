@@ -1,10 +1,7 @@
 package edu.uestc.dao;
 
 import edu.uestc.domain.SeckillUser;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.nio.Buffer;
 
@@ -28,5 +25,9 @@ public interface SeckillUserDao {
      */
     @Update("UPDATE seckill_user SET password=#{password} WHERE id=#{id}")
     void updatePassword(SeckillUser updatedUser);
+
+    @Insert("insert into seckill_user (id,nickname,password,salt) " +
+            "values (#{id},#{nickname},#{password},#{salt})")
+    void insertUser(SeckillUser user);
 
 }

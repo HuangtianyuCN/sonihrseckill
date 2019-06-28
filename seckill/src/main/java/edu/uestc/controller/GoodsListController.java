@@ -1,6 +1,7 @@
 package edu.uestc.controller;
 
 import edu.uestc.controller.result.Result;
+import edu.uestc.domain.Goods;
 import edu.uestc.domain.SeckillUser;
 import edu.uestc.redis.GoodsKeyPrefix;
 import edu.uestc.redis.RedisService;
@@ -92,6 +93,25 @@ public class GoodsListController {
 
         return html;
     }
+
+
+    /**
+     * 用于压测，返回数据为data
+     * */
+    @RequestMapping("/to_list_jmeter")// produces表明：这个请求会返回text/html媒体类型的数据
+    @ResponseBody
+    public Result<List<GoodsVo>> toListJmeter(HttpServletRequest request,
+                                              HttpServletResponse response,
+                                              SeckillUser user) {
+        // 1. 不存在
+        String html = redisService.get(GoodsKeyPrefix.goodsListKeyPrefix, "", String.class);
+
+        // 查询商品列表，用于手动渲染时将商品数据填充到页面
+        List<GoodsVo> goodsVoList = goodsService.listGoodsVo();
+        return Result.success(goodsVoList);
+
+    }
+
 
     /**
      * 处理商品详情页（未做页面静态化处理）
