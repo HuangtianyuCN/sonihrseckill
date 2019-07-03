@@ -6,8 +6,9 @@ import edu.uestc.controller.result.Result;
 import edu.uestc.domain.SeckillOrder;
 import edu.uestc.domain.SeckillUser;
 import edu.uestc.domain.OrderInfo;
-import edu.uestc.rabbitmq.MQSender;
-import edu.uestc.rabbitmq.SeckillMessage;
+import edu.uestc.mq.rabbitmq.RabbitMQSender;
+import edu.uestc.mq.SeckillMessage;
+import edu.uestc.mq.rocketmq.RocketMQSender;
 import edu.uestc.redis.GoodsKeyPrefix;
 import edu.uestc.redis.RedisService;
 import edu.uestc.service.GoodsService;
@@ -47,7 +48,7 @@ public class SeckillController implements InitializingBean {
     @Autowired
     RedisService redisService;
     @Autowired
-    MQSender sender;
+    RocketMQSender sender;
 
     // 用于内存标记，标记库存是否为空，从而减少对redis的访问
     private Map<Long, Boolean> localOverMap = new HashMap<>();
@@ -115,7 +116,7 @@ public class SeckillController implements InitializingBean {
     @ResponseBody
     public Result<Integer> doMiaoshaStatic(Model model, SeckillUser user,
                                            @RequestParam("goodsId") long goodsId,
-                                           @PathVariable("path") String path) {
+                                           @PathVariable("path") String path) throws Exception {
 
         model.addAttribute("user", user);
         // 1. 如果用户为空，则返回登录界面

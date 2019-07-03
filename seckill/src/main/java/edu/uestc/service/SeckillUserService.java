@@ -35,7 +35,7 @@ public class SeckillUserService {
     @Autowired
     RedisService redisService;
 
-    //http://localhost:8080/seckill/user/register?id=15195819097&nickname=rhinos&password=08173237eerrtt&salt=12345
+    //http://localhost:8080/seckill/user/register?id=15195819097&nickname=rhinos&password=08173237eerrtt&salt=12345ab
     public SeckillUser register(long id,String nickname,String password,String salt){
         String calcPass = MD5Util.formPassToDbPass(password, salt);
         SeckillUser user = new SeckillUser(id,nickname,calcPass,salt);

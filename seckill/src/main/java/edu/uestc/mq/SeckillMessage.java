@@ -1,4 +1,4 @@
-package edu.uestc.rabbitmq;
+package edu.uestc.mq;
 
 
 import edu.uestc.domain.SeckillUser;

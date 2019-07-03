@@ -1,4 +1,4 @@
-package edu.uestc.rabbitmq;
+package edu.uestc.mq.rabbitmq;
 
 import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +12,7 @@ import java.util.Map;
  * 通过配置文件获取消息队列
  */
 @Configuration
-public class MQConfig {
+public class RabbitMQConfig {
 
     // 消息队列名
     public static final String SECKILL_QUEUE = "seckill.queue";

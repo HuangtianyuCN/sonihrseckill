@@ -1,7 +1,7 @@
 package edu.uestc.controller;
 
 import edu.uestc.controller.result.Result;
-import edu.uestc.rabbitmq.MQSender;
+import edu.uestc.mq.rabbitmq.RabbitMQSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MQController {
 
     @Autowired
-    MQSender sender;
+    RabbitMQSender sender;
 
     /**
      * @return

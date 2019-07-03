@@ -1,7 +1,9 @@
-package edu.uestc.rabbitmq;
+package edu.uestc.mq.rabbitmq;
 
 import edu.uestc.domain.SeckillOrder;
 import edu.uestc.domain.SeckillUser;
+import edu.uestc.mq.MQReceiver;
+import edu.uestc.mq.SeckillMessage;
 import edu.uestc.redis.RedisService;
 import edu.uestc.service.GoodsService;
 import edu.uestc.service.SeckillService;
@@ -21,9 +23,9 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class MQReceiver {
+public class RabbitMQReceiver implements MQReceiver {
 
-    private static Logger logger = LoggerFactory.getLogger(MQReceiver.class);
+    private static Logger logger = LoggerFactory.getLogger(RabbitMQReceiver.class);
 
     @Autowired
     GoodsService goodsService;
@@ -35,22 +37,22 @@ public class MQReceiver {
     SeckillService seckillService;
 
     //    @RabbitHandler
-    @RabbitListener(queues = {MQConfig.QUEUE})
+    @RabbitListener(queues = {RabbitMQConfig.QUEUE})
     public void receive(String message) {
         logger.info("MQ: message: " + message);
     }
 
-    @RabbitListener(queues = MQConfig.TOPIC_QUEUE1)
+    @RabbitListener(queues = RabbitMQConfig.TOPIC_QUEUE1)
     public void receiveTopic1(String message) {
         logger.info("topic queue1 message: " + message);
     }
 
-    @RabbitListener(queues = MQConfig.TOPIC_QUEUE2)
+    @RabbitListener(queues = RabbitMQConfig.TOPIC_QUEUE2)
     public void receiveTopic2(String message) {
         logger.info("topic queue2 message: " + message);
     }
 
-    @RabbitListener(queues = MQConfig.HEADER_QUEUE)
+    @RabbitListener(queues = RabbitMQConfig.HEADER_QUEUE)
     public void receiveHeaderQueue(byte[] message) {
         logger.info("header queue message: " + new String(message));
     }
@@ -60,7 +62,7 @@ public class MQReceiver {
      *
      * @param message
      */
-    @RabbitListener(queues = MQConfig.SECKILL_QUEUE)
+    @RabbitListener(queues = RabbitMQConfig.SECKILL_QUEUE)
     public void receiveMiaoshaInfo(String message) {
         logger.info("MQ: message: " + message);
         SeckillMessage seckillMessage = RedisService.stringToBean(message, SeckillMessage.class);

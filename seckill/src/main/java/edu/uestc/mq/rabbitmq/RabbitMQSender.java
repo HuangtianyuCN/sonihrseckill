@@ -1,5 +1,7 @@
-package edu.uestc.rabbitmq;
+package edu.uestc.mq.rabbitmq;
 
+import edu.uestc.mq.MQSender;
+import edu.uestc.mq.SeckillMessage;
 import edu.uestc.redis.RedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +17,9 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class MQSender {
+public class RabbitMQSender implements MQSender {
 
-    private static Logger logger = LoggerFactory.getLogger(MQSender.class);
+    private static Logger logger = LoggerFactory.getLogger(RabbitMQSender.class);
 
     @Autowired
     AmqpTemplate amqpTemplate;
@@ -26,7 +28,7 @@ public class MQSender {
         String msg = RedisService.beanToString(message);
         logger.info("MQ send message: " + msg);
         // 第一个参数为消息队列名，第二个参数为发送的消息
-        amqpTemplate.convertAndSend(MQConfig.QUEUE, msg);
+        amqpTemplate.convertAndSend(RabbitMQConfig.QUEUE, msg);
     }
 
 
@@ -39,8 +41,8 @@ public class MQSender {
         String msg = RedisService.beanToString(message);
         logger.info("Send topic message: " + msg);
         // 将消息投递到topic exchange
-        amqpTemplate.convertAndSend(MQConfig.TOPIC_EXCHANGE, "topic.key1", msg + "1");
-        amqpTemplate.convertAndSend(MQConfig.TOPIC_EXCHANGE, "topic.key2", msg + "2");
+        amqpTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE, "topic.key1", msg + "1");
+        amqpTemplate.convertAndSend(RabbitMQConfig.TOPIC_EXCHANGE, "topic.key2", msg + "2");
     }
 
     /**
@@ -51,7 +53,7 @@ public class MQSender {
     public void sendFanout(Object message) {
         String msg = RedisService.beanToString(message);
         logger.info("Send fanout message: " + msg);
-        amqpTemplate.convertAndSend(MQConfig.FANOUT_EXCHANGE, "", msg);
+        amqpTemplate.convertAndSend(RabbitMQConfig.FANOUT_EXCHANGE, "", msg);
     }
 
     /**
@@ -66,7 +68,7 @@ public class MQSender {
         properties.setHeader("header1", "value1");
         properties.setHeader("header2", "value2");
         Message obj = new Message(msg.getBytes(), properties);
-        amqpTemplate.convertAndSend(MQConfig.HEADERS_EXCHANGE, "", obj);
+        amqpTemplate.convertAndSend(RabbitMQConfig.HEADERS_EXCHANGE, "", obj);
     }
 
     /**
@@ -78,6 +80,6 @@ public class MQSender {
         String msg = RedisService.beanToString(message);
         logger.info("MQ send message: " + msg);
         // 第一个参数为消息队列名，第二个参数为发送的消息
-        amqpTemplate.convertAndSend(MQConfig.SECKILL_QUEUE, msg);
+        amqpTemplate.convertAndSend(RabbitMQConfig.SECKILL_QUEUE, msg);
     }
 }
