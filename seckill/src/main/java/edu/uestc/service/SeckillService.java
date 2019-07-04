@@ -127,7 +127,7 @@ public class SeckillService {
         for (int i = 0; i < 50; i++) {
             int x = rdm.nextInt(width);
             int y = rdm.nextInt(height);
-            g.drawOval(x, y, 0, 0);
+            g.drawOval(x, y, 2, 2);
         }
         // generate a random code
         String verifyCode = generateVerifyCode(rdm);

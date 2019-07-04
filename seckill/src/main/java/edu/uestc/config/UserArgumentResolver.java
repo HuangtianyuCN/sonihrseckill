@@ -1,5 +1,6 @@
 package edu.uestc.config;
 
+import edu.uestc.access.UserContext;
 import edu.uestc.domain.SeckillUser;
 import edu.uestc.service.SeckillUserService;
 import org.apache.commons.lang3.StringUtils;
@@ -55,22 +56,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
                                   ModelAndViewContainer modelAndViewContainer,
                                   NativeWebRequest nativeWebRequest,
                                   WebDataBinderFactory webDataBinderFactory) throws Exception {
-        // 获取请求和响应对象
-        HttpServletRequest request = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
-        HttpServletResponse response = nativeWebRequest.getNativeResponse(HttpServletResponse.class);
-
-        // 从请求对象中获取token（token可能有两种方式从客户端返回，1：通过url的参数，2：通过set-Cookie字段）
-        String paramToken = request.getParameter(SeckillUserService.COOKIE_NAME_TOKEN);
-        String cookieToken = getCookieValue(request, SeckillUserService.COOKIE_NAME_TOKEN);
-
-        if (StringUtils.isEmpty(cookieToken) && StringUtils.isEmpty(paramToken)) {
-            return null;
-        }
-
-        // 判断是哪种方式返回的token，并由该种方式获取token（cookie）
-        String token = StringUtils.isEmpty(paramToken) ? cookieToken : paramToken;
-        // 通过token就可以在redis中查出该token对应的用户对象
-        return seckillUserService.getMisaoshaUserByToken(response, token);
+        return UserContext.getUser();
     }
 
     /**

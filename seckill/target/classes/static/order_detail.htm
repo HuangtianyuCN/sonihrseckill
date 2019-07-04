@@ -73,7 +73,7 @@
         var goods = detail.goods;
         var order = detail.order;
         $("#goodsName").text(goods.goodsName);
-        $("#goodsImg").attr("src", goods.goodsImg);
+        $("#goodsImg").attr("src", "/seckill"+goods.goodsImg);
         $("#orderPrice").text(order.goodsPrice);
         $("#createDate").text(new Date(order.createDate).format("yyyy-MM-dd hh:mm:ss"));
         var status = "";

@@ -7,6 +7,7 @@ import edu.uestc.domain.SeckillUser;
 import edu.uestc.redis.AccessKeyPrefix;
 import edu.uestc.redis.RedisService;
 import edu.uestc.service.SeckillUserService;
+import edu.uestc.util.IPUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,7 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
                     this.render(response, CodeMsg.SESSION_ERROR);
                     return false;
                 }
-                key += "_" + user.getId();
+                key += "_" + IPUtil.getIpAddress(request);
             } else {
                 //do nothing
             }

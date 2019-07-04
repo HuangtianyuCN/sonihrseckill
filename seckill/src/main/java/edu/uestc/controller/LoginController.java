@@ -2,16 +2,20 @@ package edu.uestc.controller;
 
 import edu.uestc.controller.result.Result;
 import edu.uestc.service.SeckillUserService;
+import edu.uestc.util.IPUtil;
 import edu.uestc.vo.LoginVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.awt.geom.Rectangle2D;
 
 
 /**
@@ -48,9 +52,9 @@ public class LoginController {
      */
     @RequestMapping("/do_login")
     @ResponseBody
-    public Result<Boolean> doLogin(HttpServletResponse response, @Valid LoginVo loginVo) {
+    public Result<Boolean> doLogin(HttpServletRequest request,HttpServletResponse response, @Valid LoginVo loginVo) {
         logger.info(loginVo.toString());// 打印接收的表单数据
-
+        logger.info(IPUtil.getIpAddress(request));
         // 登录
         seckillUserService.login(response, loginVo);
         return Result.success(true);
